@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Phân Loại Quả Hồng AI - EfficientNetV2</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="glow-bg"></div>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-apple-whole"></i></div>
+            <div class="logo-text">
+                <span class="brand">PERSIMMON<span class="highlight">.AI</span></span>
+                <span class="sub-brand">Hệ Thống Phân Loại Quả Hồng Chuyên Sâu</span>
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-btn active" data-tab="classify-tab">
+                <i class="fa-solid fa-magnifying-glass"></i> Nhận Diện Hình Ảnh
+            </button>
+            <button class="nav-btn" data-tab="dataset-tab">
+                <i class="fa-solid fa-folder-open"></i> Quản Lý Dataset
+            </button>
+            <button class="nav-btn" data-tab="train-tab">
+                <i class="fa-solid fa-brain"></i> Huấn Luyện Mô Hình
+            </button>
+            <button class="nav-btn" data-tab="arch-tab">
+                <i class="fa-solid fa-diagram-project"></i> So Sánh Mô Hình
+            </button>
+        </nav>
+
+        <div class="model-badge" id="currentModelBadge">
+            <span class="dot pulse"></span>
+            <span id="modelArchName">EFFICIENTNETV2</span>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+
+        <!-- TAB 1: NHẬN DIỆN HÌNH ẢNH -->
+        <section id="classify-tab" class="tab-content active">
+            <div class="hero-banner">
+                <h1>Nhận Diện Phân Loại 3 Loại Quả Hồng</h1>
+                <p>Ứng dụng trí tuệ nhân tạo nhận diện chính xác <strong>Hồng Trung Quốc</strong>, <strong>Hồng Lạng Sơn</strong>, và <strong>Hồng Đà Lạt</strong> dựa trên đặc điểm hình thái vi mô.</p>
+            </div>
+
+            <div class="classification-grid">
+                <!-- Dropzone Box -->
+                <div class="card glass-card upload-section">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-cloud-arrow-up"></i> Tải Ảnh Quả Hồng</h2>
+                        <span class="badge">JPG, PNG, WEBP</span>
+                    </div>
+                    
+                    <div class="dropzone" id="dropzone">
+                        <input type="file" id="imageInput" accept="image/*" class="file-input">
+                        <div class="dropzone-content" id="dropzoneContent">
+                            <div class="upload-icon-pulse">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </div>
+                            <h3>Kéo & thả ảnh quả hồng vào đây</h3>
+                            <p>hoặc nhấn để chọn ảnh từ thiết bị</p>
+                            <button class="btn btn-primary btn-sm"><i class="fa-solid fa-folder"></i> Chọn Tệp</button>
+                        </div>
+                        <div class="preview-box hidden" id="previewBox">
+                            <img id="imagePreview" src="" alt="Persimmon Preview">
+                            <button class="btn-remove-img" id="removeImgBtn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <button class="btn btn-accent btn-block" id="predictBtn" disabled>
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Phân Loại Ngay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Output Box -->
+                <div class="card glass-card results-section">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-pie"></i> Kết Quả Phân Loại</h2>
+                        <span class="status-indicator" id="resultsStatus">Đang chờ ảnh đầu vào</span>
+                    </div>
+
+                    <div class="empty-state" id="emptyState">
+                        <i class="fa-solid fa-basket-shopping empty-icon"></i>
+                        <p>Hãy tải lên ảnh quả hồng để xem kết quả nhận diện chi tiết và xác suất phần trăm.</p>
+                    </div>
+
+                    <div class="results-content hidden" id="resultsContent">
+                        <!-- Top Prediction Card -->
+                        <div class="top-prediction-card" id="topPredCard">
+                            <div class="prediction-badge">DỰ ĐOÁN CHÍNH XÁC NHẤT</div>
+                            <h3 class="pred-title" id="predTitle">Hồng Đà Lạt</h3>
+                            <div class="confidence-display">
+                                <span class="conf-num" id="predConf">98.5</span><span class="conf-unit">%</span>
+                            </div>
+                        </div>
+
+                        <!-- Class Probabilities Breakdown -->
+                        <div class="prob-section">
+                            <h4><i class="fa-solid fa-bars-staggered"></i> Phân Bổ Xác Suất Của Mô Hình:</h4>
+                            
+                            <div class="prob-item" id="prob-hong_trung_quoc">
+                                <div class="prob-info">
+                                    <span class="class-name">Hồng Trung Quốc</span>
+                                    <span class="prob-val" id="val-hong_trung_quoc">0%</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill fill-red" id="bar-hong_trung_quoc" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="prob-item" id="prob-hong_lang_son">
+                                <div class="prob-info">
+                                    <span class="class-name">Hồng Lạng Sơn (Bảo Lâm)</span>
+                                    <span class="prob-val" id="val-hong_lang_son">0%</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill fill-yellow" id="bar-hong_lang_son" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="prob-item" id="prob-hong_da_lat">
+                                <div class="prob-info">
+                                    <span class="class-name">Hồng Đà Lạt</span>
+                                    <span class="prob-val" id="val-hong_da_lat">0%</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill fill-green" id="bar-hong_da_lat" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Analysis Features Card -->
+                        <div class="analysis-card">
+                            <h4><i class="fa-solid fa-eye"></i> Phân Tích Đặc Điểm Hình Thái Ảnh:</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-item">
+                                    <span class="ana-label">Tỷ lệ hình dáng:</span>
+                                    <span class="ana-val" id="anaRatio">1.05</span>
+                                </div>
+                                <div class="analysis-item">
+                                    <span class="ana-label">Dạng quả:</span>
+                                    <span class="ana-val" id="anaShape">Hình bẹt / vuông</span>
+                                </div>
+                                <div class="analysis-item">
+                                    <span class="ana-label">Tông màu chủ đạo:</span>
+                                    <span class="ana-val" id="anaColor">Cam đỏ đậm</span>
+                                </div>
+                                <div class="analysis-item">
+                                    <span class="ana-label">Chế độ Mô hình:</span>
+                                    <span class="ana-val highlight-val" id="anaEngine">EfficientNetV2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reference Cards Section -->
+            <div class="reference-section">
+                <h2><i class="fa-solid fa-book-open"></i> Thư Mục Đặc Điểm Phân Biệt Quả Hồng</h2>
+                <div class="reference-grid">
+                    <div class="ref-card red-border">
+                        <div class="ref-icon">🇨🇳</div>
+                        <h3>Hồng Trung Quốc</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Kích thước quả to, dáng hơi bẹt hoặc vuông trĩnh.</li>
+                            <li><i class="fa-solid fa-check"></i> Vỏ bóng bẩy, màu đỏ cam đẫm đồng đều.</li>
+                            <li><i class="fa-solid fa-check"></i> Đài quả (tai) thường bị cắt phẳng hoặc gọt gọn.</li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-card yellow-border">
+                        <div class="ref-icon">🌾</div>
+                        <h3>Hồng Lạng Sơn (Bảo Lâm)</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Quả nhỏ đến vừa, dáng thuôn dài / hình trứng.</li>
+                            <li><i class="fa-solid fa-check"></i> Đài quả ôm sát lấy thân quả.</li>
+                            <li><i class="fa-solid fa-check"></i> Khi hái ăn giòn màu vàng xanh đến vàng cam.</li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-card green-border">
+                        <div class="ref-icon">🌲</div>
+                        <h3>Hồng Đà Lạt</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Quả hình thuôn oval hoặc trứng có đầu nhọn.</li>
+                            <li><i class="fa-solid fa-check"></i> Màu cam tự nhiên, da có nốt sần thâm nhẹ tự nhiên.</li>
+                            <li><i class="fa-solid fa-check"></i> Cuống giữ nguyên trạng thái tự nhiên.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: QUẢN LÝ DATASET THU THẬP -->
+        <section id="dataset-tab" class="tab-content">
+            <div class="hero-banner">
+                <h1>Quản Lý Tập Dữ Liệu Thu Thập (Dataset Studio)</h1>
+                <p>Tải lên ảnh hoặc video (20-30s). Hệ thống tự động **lọc khung hình rõ nét từ video** và phân loại vào bộ dữ liệu huấn luyện.</p>
+            </div>
+
+            <!-- Dataset Stats Counter Cards -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon red-icon"><i class="fa-solid fa-images"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="statClassTQ">0</span>
+                        <span class="stat-title">Hồng Trung Quốc</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon yellow-icon"><i class="fa-solid fa-images"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="statClassLS">0</span>
+                        <span class="stat-title">Hồng Lạng Sơn</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green-icon"><i class="fa-solid fa-images"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="statClassDL">0</span>
+                        <span class="stat-title">Hồng Đà Lạt</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue-icon"><i class="fa-solid fa-database"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="statTotalAll">0</span>
+                        <span class="stat-title">Tổng Mẫu Dữ Liệu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload to Dataset Form -->
+            <div class="card glass-card dataset-upload-card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-file-circle-plus"></i> [CREATE] Thêm Mẫu Ảnh Hoặc Video Mới Về Quả Hồng</h2>
+                </div>
+
+                <form id="datasetUploadForm" class="upload-form">
+                    <div class="form-group">
+                        <label for="selectClass"><i class="fa-solid fa-tag"></i> Chọn Phân Loại Quả Hồng:</label>
+                        <select id="selectClass" name="class_name" class="form-control" required>
+                            <option value="hong_trung_quoc">Hồng Trung Quốc</option>
+                            <option value="hong_lang_son">Hồng Lạng Sơn (Bảo Lâm)</option>
+                            <option value="hong_da_lat">Hồng Đà Lạt</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="datasetFile"><i class="fa-solid fa-images"></i> Chọn Hàng Loạt Ảnh Hoặc Video 360° (Giữ Ctrl / Shift để chọn nhiều tệp):</label>
+                        <input type="file" id="datasetFile" name="files" accept="image/*,video/*" class="form-control" multiple required>
+                        <small class="help-text">* Giữ phím Ctrl hoặc Shift để chọn NHIỀU ẢNH cùng lúc! Nếu chọn Video (.mp4, .mov), hệ thống sẽ tự động tách 10-15 khung hình nét nhất.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="uploadDatasetBtn">
+                        <i class="fa-solid fa-upload"></i> Tải Lên & Xử Lý
+                    </button>
+                </form>
+
+                <div id="uploadStatusMsg" class="status-msg hidden"></div>
+            </div>
+
+            <!-- Dataset CRUD Gallery Section -->
+            <div class="card glass-card dataset-gallery-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-photo-film"></i> [READ - UPDATE - DELETE] Quản Lý Thư Mục Mẫu Dữ Liệu</h2>
+                    
+                    <!-- Filter bar -->
+                    <div class="gallery-filter-bar">
+                        <button class="gallery-filter-btn active" data-filter="all">Tất Cả</button>
+                        <button class="gallery-filter-btn" data-filter="hong_trung_quoc">Hồng Trung Quốc</button>
+                        <button class="gallery-filter-btn" data-filter="hong_lang_son">Hồng Lạng Sơn</button>
+                        <button class="gallery-filter-btn" data-filter="hong_da_lat">Hồng Đà Lạt</button>
+                    </div>
+                </div>
+
+                <!-- Gallery Items Container -->
+                <div class="dataset-gallery-grid" id="datasetGalleryGrid">
+                    <!-- Dynamic Items will be rendered here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: HUẤN LUYỆN MÔ HÌNH -->
+        <section id="train-tab" class="tab-content">
+            <div class="hero-banner">
+                <h1>Trung Tâm Huấn Luyện Mô Hình (Trainer Studio)</h1>
+                <p>Fine-tune lại mô hình **EfficientNetV2** bất cứ khi nào bạn cập nhật thêm dữ liệu mới vào hệ thống.</p>
+            </div>
+
+            <div class="trainer-grid">
+                <!-- Training Parameters -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-sliders"></i> Cấu Hình Tham Số Huấn Luyện</h2>
+                    </div>
+
+                    <form id="trainForm" class="train-form">
+                        <div class="form-group">
+                            <label for="epochInput">Số Epoch (Vòng lặp):</label>
+                            <input type="number" id="epochInput" min="1" max="50" value="10" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lrInput">Learning Rate (Tốc độ học):</label>
+                            <select id="lrInput" class="form-control">
+                                <option value="0.001">0.001 (Nhanh)</option>
+                                <option value="0.0003" selected>0.0003 (Khuyên dùng)</option>
+                                <option value="0.0001">0.0001 (Tỉ mỉ)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kiến Trúc Mô Hình Đang Chọn:</label>
+                            <div class="active-arch-display" id="trainingArchDisplay">EfficientNetV2-S</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-accent btn-block" id="startTrainBtn">
+                            <i class="fa-solid fa-play"></i> Bắt Đầu Huấn Luyện (Start Training)
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Training Output Progress -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-terminal"></i> Tiến Trình & Nhật Ký Epochs</h2>
+                        <span class="badge badge-success" id="trainStatusBadge">Sẵn sàng</span>
+                    </div>
+
+                    <div class="log-console" id="logConsole">
+                        <p class="console-line">[System] Đang chờ lệnh huấn luyện từ người dùng...</p>
+                        <p class="console-line">[System] Bạn có thể thêm dữ liệu ở tab "Quản lý Dataset" trước khi train.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SO SÁNH KIẾN TRÚC MÔ HÌNH -->
+        <section id="arch-tab" class="tab-content">
+            <div class="hero-banner">
+                <h1>So Sánh & Lựa Chọn Mô Hình</h1>
+                <p>Chuyển đổi backbone mô hình linh hoạt giữa **EfficientNetV2**, **ResNet-50** và **MobileNetV3**.</p>
+            </div>
+
+            <div class="arch-selector-grid">
+                <!-- EfficientNetV2 Card -->
+                <div class="arch-card active-arch" id="archCard-efficientnet_v2">
+                    <div class="arch-tag">KHUYÊN DÙNG</div>
+                    <h3>EfficientNetV2</h3>
+                    <p class="arch-desc">Mô hình tiên tiến nhất của Google với khối Fused-MBConv. Độ chính xác phân loại chi tiết (fine-grained) cao nhất.</p>
+                    <ul class="arch-specs">
+                        <li><strong>Top-1 Acc:</strong> 83.9%</li>
+                        <li><strong>Params:</strong> 21.5M</li>
+                        <li><strong>Khả năng trích xuất:</strong> Siêu vi vi mô</li>
+                    </ul>
+                    <button class="btn btn-primary btn-block select-arch-btn" data-arch="efficientnet_v2">
+                        <i class="fa-solid fa-check"></i> Đang Sử Dụng
+                    </button>
+                </div>
+
+                <!-- ResNet-50 Card -->
+                <div class="arch-card" id="archCard-resnet50">
+                    <div class="arch-tag secondary-tag">BASELINE</div>
+                    <h3>ResNet-50</h3>
+                    <p class="arch-desc">Mô hình kinh điển với kết nối Residual Connection. Chuẩn mực so sánh bền vững nhất trong ngành.</p>
+                    <ul class="arch-specs">
+                        <li><strong>Top-1 Acc:</strong> 78.8%</li>
+                        <li><strong>Params:</strong> 25.6M</li>
+                        <li><strong>Khả năng trích xuất:</strong> Chuẩn ngành</li>
+                    </ul>
+                    <button class="btn btn-outline btn-block select-arch-btn" data-arch="resnet50">
+                        <i class="fa-solid fa-repeat"></i> Chuyển Sang ResNet-50
+                    </button>
+                </div>
+
+                <!-- MobileNetV3 Card -->
+                <div class="arch-card" id="archCard-mobilenet_v3">
+                    <div class="arch-tag tertiary-tag">SIÊU NHẸ</div>
+                    <h3>MobileNetV3</h3>
+                    <p class="arch-desc">Tối ưu hóa cực hạn cho thiết bị di động và nhúng. Dung lượng nhẹ nhất, ngốn ít tài nguyên nhất.</p>
+                    <ul class="arch-specs">
+                        <li><strong>Top-1 Acc:</strong> 75.2%</li>
+                        <li><strong>Params:</strong> 5.4M</li>
+                        <li><strong>Khả năng trích xuất:</strong> Nhanh nhẹ</li>
+                    </ul>
+                    <button class="btn btn-outline btn-block select-arch-btn" data-arch="mobilenet_v3">
+                        <i class="fa-solid fa-repeat"></i> Chuyển Sang MobileNetV3
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
