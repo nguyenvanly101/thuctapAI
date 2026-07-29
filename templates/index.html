@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,13 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
 
     <div class="glow-bg"></div>
@@ -53,7 +57,8 @@
         <section id="classify-tab" class="tab-content active">
             <div class="hero-banner">
                 <h1>Nhận Diện Phân Loại 3 Loại Quả Hồng</h1>
-                <p>Ứng dụng trí tuệ nhân tạo nhận diện chính xác <strong>Hồng Trung Quốc</strong>, <strong>Hồng Lạng Sơn</strong>, và <strong>Hồng Đà Lạt</strong> dựa trên đặc điểm hình thái vi mô.</p>
+                <p>Ứng dụng trí tuệ nhân tạo nhận diện chính xác <strong>Hồng Trung Quốc</strong>, <strong>Hồng Lạng
+                        Sơn</strong>, và <strong>Hồng Đà Lạt</strong> dựa trên đặc điểm hình thái vi mô.</p>
             </div>
 
             <div class="classification-grid">
@@ -63,7 +68,7 @@
                         <h2><i class="fa-solid fa-cloud-arrow-up"></i> Tải Ảnh Quả Hồng</h2>
                         <span class="badge">JPG, PNG, WEBP</span>
                     </div>
-                    
+
                     <div class="dropzone" id="dropzone">
                         <input type="file" id="imageInput" accept="image/*" class="file-input">
                         <div class="dropzone-content" id="dropzoneContent">
@@ -112,14 +117,15 @@
                         <!-- Class Probabilities Breakdown -->
                         <div class="prob-section">
                             <h4><i class="fa-solid fa-bars-staggered"></i> Phân Bổ Xác Suất Của Mô Hình:</h4>
-                            
+
                             <div class="prob-item" id="prob-hong_trung_quoc">
                                 <div class="prob-info">
                                     <span class="class-name">Hồng Trung Quốc</span>
                                     <span class="prob-val" id="val-hong_trung_quoc">0%</span>
                                 </div>
                                 <div class="progress-bar-bg">
-                                    <div class="progress-bar-fill fill-red" id="bar-hong_trung_quoc" style="width: 0%"></div>
+                                    <div class="progress-bar-fill fill-red" id="bar-hong_trung_quoc" style="width: 0%">
+                                    </div>
                                 </div>
                             </div>
 
@@ -129,7 +135,8 @@
                                     <span class="prob-val" id="val-hong_lang_son">0%</span>
                                 </div>
                                 <div class="progress-bar-bg">
-                                    <div class="progress-bar-fill fill-yellow" id="bar-hong_lang_son" style="width: 0%"></div>
+                                    <div class="progress-bar-fill fill-yellow" id="bar-hong_lang_son" style="width: 0%">
+                                    </div>
                                 </div>
                             </div>
 
@@ -139,7 +146,8 @@
                                     <span class="prob-val" id="val-hong_da_lat">0%</span>
                                 </div>
                                 <div class="progress-bar-bg">
-                                    <div class="progress-bar-fill fill-green" id="bar-hong_da_lat" style="width: 0%"></div>
+                                    <div class="progress-bar-fill fill-green" id="bar-hong_da_lat" style="width: 0%">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +208,8 @@
                         <h3>Hồng Đà Lạt</h3>
                         <ul>
                             <li><i class="fa-solid fa-check"></i> Quả hình thuôn oval hoặc trứng có đầu nhọn.</li>
-                            <li><i class="fa-solid fa-check"></i> Màu cam tự nhiên, da có nốt sần thâm nhẹ tự nhiên.</li>
+                            <li><i class="fa-solid fa-check"></i> Màu cam tự nhiên, da có nốt sần thâm nhẹ tự nhiên.
+                            </li>
                             <li><i class="fa-solid fa-check"></i> Cuống giữ nguyên trạng thái tự nhiên.</li>
                         </ul>
                     </div>
@@ -212,7 +221,8 @@
         <section id="dataset-tab" class="tab-content">
             <div class="hero-banner">
                 <h1>Quản Lý Tập Dữ Liệu Thu Thập (Dataset Studio)</h1>
-                <p>Tải lên ảnh hoặc video (20-30s). Hệ thống tự động **lọc khung hình rõ nét từ video** và phân loại vào bộ dữ liệu huấn luyện.</p>
+                <p>Tải lên ảnh hoặc video (20-30s). Hệ thống tự động **lọc khung hình rõ nét từ video** và phân loại vào
+                    bộ dữ liệu huấn luyện.</p>
             </div>
 
             <!-- Dataset Stats Counter Cards -->
@@ -253,7 +263,8 @@
             <!-- Upload to Dataset Form -->
             <div class="card glass-card dataset-upload-card" style="margin-bottom: 2rem;">
                 <div class="card-header">
-                    <h2><i class="fa-solid fa-file-circle-plus"></i> [CREATE] Thêm Mẫu Ảnh Hoặc Video Mới Về Quả Hồng</h2>
+                    <h2><i class="fa-solid fa-file-circle-plus"></i> [CREATE] Thêm Mẫu Ảnh Hoặc Video Mới Về Quả Hồng
+                    </h2>
                 </div>
 
                 <form id="datasetUploadForm" class="upload-form">
@@ -267,9 +278,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="datasetFile"><i class="fa-solid fa-images"></i> Chọn Hàng Loạt Ảnh Hoặc Video 360° (Giữ Ctrl / Shift để chọn nhiều tệp):</label>
-                        <input type="file" id="datasetFile" name="files" accept="image/*,video/*" class="form-control" multiple required>
-                        <small class="help-text">* Giữ phím Ctrl hoặc Shift để chọn NHIỀU ẢNH cùng lúc! Nếu chọn Video (.mp4, .mov), hệ thống sẽ tự động tách 10-15 khung hình nét nhất.</small>
+                        <label for="datasetFile"><i class="fa-solid fa-images"></i> Chọn Hàng Loạt Ảnh Hoặc Video 360°
+                            :</label>
+                        <input type="file" id="datasetFile" name="files" accept="image/*,video/*" class="form-control"
+                            multiple required>
+                        <small class="help-text">Nếu chọn Video (.mp4, .mov), hệ thống sẽ tự động tách 10-15 khung hình
+                            nét nhất.</small>
                     </div>
 
                     <button type="submit" class="btn btn-primary" id="uploadDatasetBtn">
@@ -284,7 +298,7 @@
             <div class="card glass-card dataset-gallery-card">
                 <div class="card-header">
                     <h2><i class="fa-solid fa-photo-film"></i> [READ - UPDATE - DELETE] Quản Lý Thư Mục Mẫu Dữ Liệu</h2>
-                    
+
                     <!-- Filter bar -->
                     <div class="gallery-filter-bar">
                         <button class="gallery-filter-btn active" data-filter="all">Tất Cả</button>
@@ -305,7 +319,8 @@
         <section id="train-tab" class="tab-content">
             <div class="hero-banner">
                 <h1>Trung Tâm Huấn Luyện Mô Hình (Trainer Studio)</h1>
-                <p>Fine-tune lại mô hình **EfficientNetV2** bất cứ khi nào bạn cập nhật thêm dữ liệu mới vào hệ thống.</p>
+                <p>Fine-tune lại mô hình **EfficientNetV2** bất cứ khi nào bạn cập nhật thêm dữ liệu mới vào hệ thống.
+                </p>
             </div>
 
             <div class="trainer-grid">
@@ -350,7 +365,8 @@
 
                     <div class="log-console" id="logConsole">
                         <p class="console-line">[System] Đang chờ lệnh huấn luyện từ người dùng...</p>
-                        <p class="console-line">[System] Bạn có thể thêm dữ liệu ở tab "Quản lý Dataset" trước khi train.</p>
+                        <p class="console-line">[System] Bạn có thể thêm dữ liệu ở tab "Quản lý Dataset" trước khi
+                            train.</p>
                     </div>
                 </div>
             </div>
@@ -368,14 +384,15 @@
                 <div class="arch-card active-arch" id="archCard-efficientnet_v2">
                     <div class="arch-tag">KHUYÊN DÙNG</div>
                     <h3>EfficientNetV2</h3>
-                    <p class="arch-desc">Mô hình tiên tiến nhất của Google với khối Fused-MBConv. Độ chính xác phân loại chi tiết (fine-grained) cao nhất.</p>
+                    <p class="arch-desc">Mô hình tiên tiến nhất của Google với khối Fused-MBConv. Độ chính xác phân loại
+                        chi tiết (fine-grained) cao nhất.</p>
                     <ul class="arch-specs">
                         <li><strong>Top-1 Acc:</strong> 83.9%</li>
                         <li><strong>Params:</strong> 21.5M</li>
                         <li><strong>Khả năng trích xuất:</strong> Siêu vi vi mô</li>
                     </ul>
                     <button class="btn btn-primary btn-block select-arch-btn" data-arch="efficientnet_v2">
-                        <i class="fa-solid fa-check"></i> Đang Sử Dụng
+                        <i class="fa-solid fa-check"></i>
                     </button>
                 </div>
 
@@ -383,14 +400,15 @@
                 <div class="arch-card" id="archCard-resnet50">
                     <div class="arch-tag secondary-tag">BASELINE</div>
                     <h3>ResNet-50</h3>
-                    <p class="arch-desc">Mô hình kinh điển với kết nối Residual Connection. Chuẩn mực so sánh bền vững nhất trong ngành.</p>
+                    <p class="arch-desc">Mô hình kinh điển với kết nối Residual Connection. Chuẩn mực so sánh bền vững
+                        nhất trong ngành.</p>
                     <ul class="arch-specs">
                         <li><strong>Top-1 Acc:</strong> 78.8%</li>
                         <li><strong>Params:</strong> 25.6M</li>
                         <li><strong>Khả năng trích xuất:</strong> Chuẩn ngành</li>
                     </ul>
                     <button class="btn btn-outline btn-block select-arch-btn" data-arch="resnet50">
-                        <i class="fa-solid fa-repeat"></i> Chuyển Sang ResNet-50
+                        <i class="fa-solid fa-repeat"></i>ResNet-50
                     </button>
                 </div>
 
@@ -398,14 +416,15 @@
                 <div class="arch-card" id="archCard-mobilenet_v3">
                     <div class="arch-tag tertiary-tag">SIÊU NHẸ</div>
                     <h3>MobileNetV3</h3>
-                    <p class="arch-desc">Tối ưu hóa cực hạn cho thiết bị di động và nhúng. Dung lượng nhẹ nhất, ngốn ít tài nguyên nhất.</p>
+                    <p class="arch-desc">Tối ưu hóa cực hạn cho thiết bị di động và nhúng. Dung lượng nhẹ nhất, ngốn ít
+                        tài nguyên nhất.</p>
                     <ul class="arch-specs">
                         <li><strong>Top-1 Acc:</strong> 75.2%</li>
                         <li><strong>Params:</strong> 5.4M</li>
                         <li><strong>Khả năng trích xuất:</strong> Nhanh nhẹ</li>
                     </ul>
                     <button class="btn btn-outline btn-block select-arch-btn" data-arch="mobilenet_v3">
-                        <i class="fa-solid fa-repeat"></i> Chuyển Sang MobileNetV3
+                        <i class="fa-solid fa-repeat"></i> MobileNetV3
                     </button>
                 </div>
             </div>
@@ -415,4 +434,5 @@
 
     <script src="/static/js/main.js"></script>
 </body>
+
 </html>
